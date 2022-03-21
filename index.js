@@ -17,7 +17,6 @@ mongoose
     return Recipe.deleteMany()
   })
   .then(() => {
-    Recipe.insertMany(data)
     // Recipe.create(
     //   {
     //     "title": "Asian Glazed Chicken Thighs",
@@ -40,10 +39,20 @@ mongoose
     //   }
     // )
    //console.log()
-  const query = { name : /Rigatoni/ }
-  
-  Recipe.findOneAndUpdate(query, {duration : 100}, {option: 'after'})
-  Recipe.deleteOne({name : 'Carrot Cake'})
+   return Recipe.insertMany(data)
+  })
+  .then((insertedReciepies) => {
+    console.log(insertedReciepies.title)
+    
+    const query = { name : /Rigatoni/ }
+    return Recipe.findOneAndUpdate(query, {duration : 100}, {option: 'after'})
+  })
+  .then((updatedRecipies) => {
+    console.log(updatedRecipies.duration)
+    return Recipe.deleteOne({name : 'Carrot Cake'})
+  })
+  .then(() => {
+    mongoose.connection.close()
   })
 
   .catch(error => {
